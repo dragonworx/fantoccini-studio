@@ -1,0 +1,167 @@
+// General
+$spacing_tiny: 2px;
+$spacing_small: 5px;
+$spacing_label: 8px;
+$border_radius_small: 5px;
+$border_radius_tiny: 3px;
+$color_focus: #0077b3;
+
+// Label
+$color_label_enabled: #bdbec0;
+$color_label_disabled: #77787b;
+$color_label_link: #57b1ff;
+$color_label_link_active: #74caff;
+$color_label_shadow_enabled: #080808;
+$color_label_shadow_disabled: #383838;
+
+// TextField
+$color_textfield_enabled: #bdbec0;
+
+// ScrollBar
+$scrollbar_size: 20px;
+$scrollbar_radius: 3px;
+
+@mixin noselect() {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+@mixin debug() {
+  border: 1px solid red;
+}
+
+@mixin debug2() {
+  border: 1px solid green;
+}
+
+// Mixins
+@mixin linear_gradient($fromColor: black, $toColor: white, $angle: 0deg) {
+  background: linear-gradient($angle, $fromColor 0, $toColor 100%);
+}
+
+@mixin textfield_enabled {
+  @include linear_gradient(#2f343c, #1d2127);
+  box-shadow: inset 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px inset #818181;
+}
+
+@mixin textfield_disabled {
+  @include linear_gradient(#3a424e, #5a5c5e, 180deg);
+  border: 1px inset #6e6d6d;
+  box-shadow: none;
+}
+
+@mixin button_enabled_fill {
+  @include linear_gradient(#24282f, #2f343c);
+}
+
+@mixin button_enabled_hover {
+  @include linear_gradient(#24282f, #343a42);
+}
+
+@mixin button_enabled_down_fill {
+  @include linear_gradient(#2f343c, #1d2127);
+}
+
+@mixin button_enabled_down {
+  @include button_enabled_down_fill();
+  @include button_border(true);
+  box-shadow: inset 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+@mixin button_enabled_hover {
+  @include linear_gradient(#353a44, #24282f);
+}
+
+@mixin button_enabled_active {
+  @include linear_gradient(#40404e, #1f232c);
+}
+
+@mixin button_disabled($angle: 0deg) {
+  @include linear_gradient(#3a424e, #5a5c5e, $angle);
+  @include button_border();
+  border: 1px solid #323232;
+  box-shadow: none;
+}
+
+@mixin button_disabled_down {
+  @include button_border(true);
+  box-shadow: inset 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+@mixin button_border_down {
+  border: 1px solid #444;
+  border-left-color: #444;
+  border-right-color: #444;
+  border-bottom-color: #999;
+}
+
+@mixin button_border_up {
+  border: 1px solid #999;
+  border-left-color: #555;
+  border-right-color: #555;
+  border-bottom-color: #444;
+}
+
+@mixin button_border($isDown: false) {
+  &:before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    border-radius: $border_radius_small;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    @if $isDown {
+      @include button_border_down;
+      top: 1px;
+      left: 1px;
+    } @else {
+      @include button_border_up;
+    }
+  }
+
+  &.round:before {
+    border-radius: 1000px;
+  }
+}
+
+@mixin button_close() {
+  background: linear-gradient(0deg, #264e95 0, #807979 100%) !important;
+}
+
+@mixin scrollbar_disabled($angle: 0deg) {
+  @include linear_gradient(#404246, #545556, $angle);
+  border: 1px solid #444;
+}
+
+@mixin focus {
+  outline: 1px solid $color_focus;
+}
+
+@mixin label_enabled {
+  @include noselect();
+  box-sizing: border-box;
+  color: $color_label_enabled;
+  text-shadow: 1px 1px 1px $color_label_shadow_enabled;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin label_disabled {
+  color: $color_label_disabled;
+  text-shadow: 1px 1px 1px $color_label_shadow_disabled;
+}
+
+@mixin debug {
+  outline: 1px solid red;
+}
+
+@mixin outline($color: red) {
+  outline: 1px solid $color;
+}
