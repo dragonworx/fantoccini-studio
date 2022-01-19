@@ -43,6 +43,6 @@
   <Panel {menuBar} />
   <NewProjectWindow
     isOpen={state.dialog.new.isOpen}
-    on:close={() => (state.dialog.new.isOpen = false)} />
+    on:cancel={() => (state.dialog.new.isOpen = false)} />
   <div id="debug">{Date.now()}</div>
 </main>

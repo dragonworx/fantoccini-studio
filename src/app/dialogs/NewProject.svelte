@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     flex-grow: 1;
-    border: 1px solid red;
+    margin-top: 10px;
   }
 </style>
 
@@ -13,6 +13,7 @@
   import Form from "../../gui/components/Form.svelte";
   import TextField from "../../gui/components/TextField.svelte";
   import Window from "../../gui/components/Window.svelte";
+  import DialogButtons from "../../gui/components/DialogButtons.svelte";
   import app from "../application";
 
   export let isOpen: boolean = false;
@@ -23,14 +24,16 @@
 
   $: screenWidth = app.screenWidth;
   $: screenHeight = app.screenHeight;
-  $: halfScreenWidth = Math.round(screenWidth / 2);
-  $: halfScreenHeight = Math.round(screenHeight / 2);
+  $: windowWidth = 300;
+  $: windowHeight = 120;
 
   const dispatch = createEventDispatcher();
 
   const onClose = () => {
     dispatch("cancel");
   };
+
+  const onAccept = () => {};
 </script>
 
 <main>
@@ -38,18 +41,21 @@
     id="newProject"
     {isOpen}
     title="New Project"
-    x={halfScreenWidth * 0.5}
-    y={halfScreenHeight * 0.5}
-    width={halfScreenWidth}
-    height={halfScreenHeight}
+    x={screenWidth * 0.5 - windowWidth * 0.5}
+    y={screenHeight * 0.5 - windowHeight * 0.5}
+    width={windowWidth}
+    height={windowHeight}
     canMaximise={false}
     canMinimise={false}
     on:close={onClose}>
     <div class="layout">
-      <Form labelSize={100} width={300}>
+      <Form labelSize={50}>
         <Label text="Title:" /><TextField bind:value={state.title} />
-        <Label text="Title:" /><TextField />
       </Form>
+      <DialogButtons
+        acceptText="Create Project"
+        on:accept={onAccept}
+        on:cancel />
     </div>
   </Window>
 </main>
