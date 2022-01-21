@@ -22,27 +22,13 @@
 </style>
 
 <script lang="ts">
-  import app, { AppEvent, menuBar } from "./app/application";
+  import { menuBar } from "./app/application";
   import Panel from "./gui/components/Panel.svelte";
   import NewProjectWindow from "./app/dialogs/NewProject.svelte";
-
-  app.on(AppEvent.ShowNewDialog, () => {
-    state.dialog.new.isOpen = true;
-  });
-
-  $: state = {
-    dialog: {
-      new: {
-        isOpen: false,
-      },
-    },
-  };
 </script>
 
 <main>
   <Panel {menuBar} />
-  <NewProjectWindow
-    isOpen={state.dialog.new.isOpen}
-    on:cancel={() => (state.dialog.new.isOpen = false)} />
+  <NewProjectWindow />
   <div id="debug">{Date.now()}</div>
 </main>

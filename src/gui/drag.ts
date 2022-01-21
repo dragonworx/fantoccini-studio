@@ -4,7 +4,7 @@ export class Dragger<T> extends EventEmitter {
   isDragging: boolean = false;
   startX: number = 0;
   startY: number = 0;
-  startValue: T;
+  startValue?: T;
 
   onStartDrag = (e: MouseEvent) => {
     this.isDragging = true;

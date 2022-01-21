@@ -3,6 +3,9 @@ import EventEmitter from "eventemitter3";
 
 export type ActionHandler = () => void;
 
+const isMacOS = () =>
+  navigator.platform.toLocaleLowerCase().indexOf("mac") > -1;
+
 export class Action extends EventEmitter {
   isEnabled: boolean = true;
   isChecked: boolean = false;
@@ -20,10 +23,20 @@ export class Action extends EventEmitter {
   }
 
   get printShortcut() {
-    return this.hotkey
-      .split("+")
-      .map((part) => part[0].toUpperCase() + part.substring(1))
-      .join(" ");
+    if (this.hotkey) {
+      let hotkey = this.hotkey.toLocaleLowerCase();
+      if (isMacOS() && hotkey.includes("command")) {
+        hotkey = hotkey
+          .split(",")
+          .filter((part) => part.indexOf("command") > -1)
+          .join(",");
+      }
+      return hotkey
+        .split("+")
+        .map((part) => part[0].toUpperCase() + part.substring(1))
+        .join(" ");
+    }
+    return "";
   }
 
   register() {

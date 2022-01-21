@@ -1,10 +1,14 @@
 <style lang="scss">
-  .grid {
-    display: grid;
-    align-items: center;
+  .form {
+    display: block;
+
+    .grid {
+      display: grid;
+      align-items: center;
+    }
   }
 
-  :global([data-component="grid"] > *:nth-child(odd)) {
+  :global([data-component="form"] .grid > *:nth-child(odd)) {
     justify-self: end;
   }
 </style>
@@ -14,7 +18,7 @@
   export let height: number | undefined = undefined;
   export let rowGap: number = 10;
   export let columnGap: number = 10;
-  export let rowSize: number = 25;
+  export let rowSize: number = 30;
   export let labelSize: number = -1;
 
   $: style = JSON.stringify({
@@ -32,6 +36,6 @@
     .replace(/,/g, ";");
 </script>
 
-<div data-component="grid" class="grid" {style}>
-  <slot />
+<div data-component="form" class="form">
+  <div class="grid" {style}><slot /></div>
 </div>

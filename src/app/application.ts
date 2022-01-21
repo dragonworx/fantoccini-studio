@@ -1,13 +1,25 @@
-import { process, dialog } from "@tauri-apps/api";
+import { process, dialog, fs } from "@tauri-apps/api";
 import { EventEmitter } from "eventemitter3";
+import { Project } from "../core/project";
 import { Action } from "../gui/action";
 import { MenuBarItem, MenuItem, separator } from "../gui/menu";
-
-export enum AppEvent {
-  ShowNewDialog = "showNewDialog",
-}
+import { events, AppEvent } from "./events";
+import WaveformData from "waveform-data";
 
 export class Application extends EventEmitter {
+  project: Project;
+
+  constructor() {
+    super();
+    events.on(AppEvent.CreateNewProject, (opts) => {
+      this.project = new Project(opts);
+    });
+  }
+
+  open(file: string) {
+    console.log(file);
+  }
+
   get screenWidth() {
     return document.documentElement.clientWidth;
   }
@@ -16,10 +28,8 @@ export class Application extends EventEmitter {
     return document.documentElement.clientHeight;
   }
 
-  showOpenDialog() {
-    dialog.open({}).then((result) => {
-      console.log(result);
-    });
+  async showOpenDialog() {
+    return dialog.open({});
   }
 
   exit() {
@@ -35,15 +45,17 @@ const fileMenu: MenuItem[] = [
   new MenuItem({
     label: "New Project",
     action: new Action(() => {
-      app.emit(AppEvent.ShowNewDialog);
-    }, "Ctrl+N"),
+      events.emit(AppEvent.ShowNewDialog);
+    }, "Ctrl+N,Command+N"),
   }),
   separator,
   new MenuItem({
     label: "Open Project",
     action: new Action(() => {
-      app.showOpenDialog();
-    }, "Ctrl+O"),
+      app.showOpenDialog().then((result: string) => {
+        app.open(result);
+      });
+    }, "Ctrl+O,Command+O"),
   }),
   separator,
   new MenuItem({
